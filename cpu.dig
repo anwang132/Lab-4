@@ -156,6 +156,92 @@
           <string>Testdata</string>
           <testData>
             <dataString>clk ReadData1 ReadData2
+0 0 0        # addi x4, x0, -20
+C (-20) 0    # addi x5, x4, 0x7F0      ; x4 = -20
+C 2012 0     # addi x6, x5, 0x701      ; x5 = 2012
+C 3805 0     # addi x7, x6, 0x531      ; x6 = 3805
+C 3805 0     # andi x14, x6, 0x123     ; rs1 = x6
+C 1 0        # andi x15, x14, 0x71C    ; rs1 = x14 = 1
+C 0 0        # andi x17, x15, 0x541    ; rs1 = x15 = 0
+C (-20) 0    # slti x18, x4, 311       ; rs1 = x4
+C 1 0        # slti x19, x18, 2        ; rs1 = x18 = 1
+C 1 0        # slti x20, x19, 0        ; rs1 = x19 = 1
+C 0 0        # slti x21, x20, -3       ; rs1 = x20 = 0
+C 0 2012        # slti x22, x21, 5        ; rs1 = x21 = 0
+C 1 0        # addi x0,  x22, 0        ; rs1 = x22 = 1 (write to x0 ignored)
+C (-20) 0    # slti x23, x4,  -20      ; rs1 = x4
+C 0 0        # addi x0,  x23, 0        ; rs1 = x23 = 0
+C 0 3805        # slti x24, x11, -90      ; x11 was never set, so 0
+C 0 0        # addi x0,  x24, 0        ; rs1 = x24 = 0
+C (-20) 0    # slti x25, x4,  0        ; rs1 = x4
+C 1 0        # addi x0,  x25, 0        ; rs1 = x25 = 1
+C 0 0        # slti x26, x11, 600      ; x11 still 0
+C 1 0        # addi x0,  x26, 0        ; rs1 = x26 = 1
+C (-20) 0    # slti x27, x4,  -1       ; rs1 = x4
+C 1 0        # addi x0,  x27, 0        ; rs1 = x27 = 1
+C 0 (-20)    # addi x8,  x0, 100
+C 0 0    # addi x9,  x0, -1
+C 100 (-1)    # add  x10, x8, x9
+C 99 (-20)    # add  x11, x10, x4
+C (-1) (-1)    # add  x12, x9, x9
+C 100 100    # add  x0,  x8, x8
+C 0 (-2)    # add  x13, x0, x12
+C 100 (-1)    # sub  x16, x8, x9
+C (-1) 100    # sub  x28, x9, x8
+C 101 101    # sub  x29, x16, x16
+C 0 (-101)    # sub  x30, x29, x28
+C 2012 3805    # or   x31, x5, x6
+C 4061 0    # or   x1,  x31, x0
+C 100 (-1)    # or   x2,  x8, x9
+C 2012 3805    # and  x3,  x5, x6
+C 1756 (-1)    # and  x10, x3, x9
+C 1756 0    # and  x11, x10, x0
+C 0 0    # addi x12, x0, -2048
+C (-2048) 4061    # addi x13, x12, 2047
+C (-1) 0    # andi x16, x13, -2048
+C 3805 4061    # andi x28, x6, -1
+C (-20) (-1)    # slti x29, x4, -19
+C 100 4061    # slti x30, x8, -1
+C (-1) 4061    # slti x31, x9, 1
+C 1 0    # addi x0,  x29, 0
+C 0 0    # addi x0,  x30, 0
+C 1 0    # addi x0,  x31, 0
+C (-20) 100    # slt  x1,  x4, x8
+C 100 (-20)    # slt  x2,  x8, x4
+C (-1) 0    # slt  x3,  x9, x0
+C 0 (-1)    # slt  x10, x0, x9
+C 100 100    # slt  x11, x8, x8
+C 1 0    # add  x0,  x1, x2
+C 1 0    # add  x0,  x3, x10
+C 0 0    # addi x0,  x11, 0
+C 0 1    # addi x1,  x0, 31
+C 0 31    # addi x2,  x0, 1
+C 0 0    # addi x3,  x0, 32
+C 1 31    # sll  x10, x2, x1
+C (-1) 0    # sll  x11, x9, x0
+C 1 32    # sll  x12, x2, x3
+C 100 1    # sll  x13, x8, x2
+C (-2147483648) (-1)    # add  x16, x10, x9
+C 2147483647 1    # add  x28, x16, x2
+C (-2147483648) 2147483647    # slt  x29, x10, x16
+C 2147483647 (-2147483648)    # slt  x30, x16, x10
+C (-1) 1    # add  x0,  x11, x12
+C 200 (-2147483648)    # add  x0,  x13, x28
+C 1 0    # add  x0,  x29, x30
+C (-2147483648) 31    # srl  x11, x10, x1
+C (-20) 1    # srl  x12, x4, x2
+C (-20) 32    # srl  x13, x4, x3
+C (-20) 0    # srl  x16, x4, x0
+C 1 2147483638    # add  x0,  x11, x12
+C (-20) (-20)    # add  x0,  x13, x16
+C (-2147483648) 31    # sra  x11, x10, x1
+C (-20) 1    # sra  x12, x4, x2
+C (-20) 32    # sra  x13, x4, x3
+C (-20) 0    # sra  x16, x4, x0
+C 100 1    # sra  x28, x8, x2
+C (-1) (-10)    # add  x0,  x11, x12
+C (-20) (-20)    # add  x0,  x13, x16
+C 50 0    # addi x0,  x28, 0
 </dataString>
           </testData>
         </entry>
@@ -178,13 +264,17 @@
           <string>Instruction Memory</string>
         </entry>
         <entry>
+          <string>Data</string>
+          <data>fec00213,7f020293,70128313,53130393,12337713,71c77793,5417f893,13722913,292993,9aa13,ffda2a93,5aab13,b0013,fec22b93,b8013,fa65ac13,c0013,22c93,c8013,2585ad13,d0013,fff22d93,d8013,6400413,fff00493,940533,4505b3,948633,840033,c006b3,40940833,40848e33,41080eb3,41ce8f33,62efb3,fe0b3,946133,62f1b3,91f533,575b3,80000613,7ff60693,8006f813,fff37e13,fed22e93,fff42f13,14af93,e8013,f0013,f8013,8220b3,442133,4a1b3,902533,8425b3,208033,a18033,58013,1f00093,100113,2000193,111533,495b3,311633,2416b3,950833,280e33,1052eb3,a82f33,c58033,1c68033,1ee8033,1555b3,225633,3256b3,25833,c58033,1068033,401555b3,40225633,403256b3,40025833,40245e33,c58033,1068033,e0013</data>
+        </entry>
+        <entry>
           <string>Bits</string>
           <int>32</int>
         </entry>
       </elementAttributes>
       <pos x="560" y="360" />
     </visualElement>
-  </visualElements>
+  <visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>instr</string></entry></elementAttributes><pos x="640" y="380" /></visualElement><visualElement><elementName>Splitter</elementName><elementAttributes><entry><string>Input Splitting</string><string>32</string></entry><entry><string>Output Splitting</string><string>7,5,3,5,5,7</string></entry></elementAttributes><pos x="760" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>instr</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="740" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>opcode</string></entry></elementAttributes><pos x="800" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd</string></entry></elementAttributes><pos x="800" y="620" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>funct3</string></entry></elementAttributes><pos x="800" y="640" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rs1</string></entry></elementAttributes><pos x="800" y="660" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rs2</string></entry></elementAttributes><pos x="800" y="680" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>funct7</string></entry></elementAttributes><pos x="800" y="700" /></visualElement><visualElement><elementName>Splitter</elementName><elementAttributes><entry><string>Input Splitting</string><string>32</string></entry><entry><string>Output Splitting</string><string>20,12</string></entry></elementAttributes><pos x="760" y="760" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>instr</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="740" y="760" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>imm12</string></entry></elementAttributes><pos x="800" y="780" /></visualElement><visualElement><elementName>BitExtender</elementName><elementAttributes><entry><string>inputBits</string><int>12</int></entry><entry><string>outputBits</string><int>32</int></entry></elementAttributes><pos x="900" y="780" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>imm12</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="880" y="780" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>imm32</string></entry></elementAttributes><pos x="980" y="780" /></visualElement><visualElement><elementName>control-unit.dig</elementName><elementAttributes></elementAttributes><pos x="1100" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>opcode</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>funct3</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="620" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>funct7</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="640" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>ALUOp</string></entry></elementAttributes><pos x="1180" y="600" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>ALUSrc</string></entry></elementAttributes><pos x="1180" y="640" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>RegWrite</string></entry></elementAttributes><pos x="1180" y="660" /></visualElement><visualElement><elementName>register-file.dig</elementName><elementAttributes></elementAttributes><pos x="1100" y="800" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rs1</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="800" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rs2</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="820" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="840" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>result</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="860" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>RegWrite</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="880" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>clock</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1080" y="900" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd1</string></entry></elementAttributes><pos x="1180" y="800" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd2</string></entry></elementAttributes><pos x="1180" y="820" /></visualElement><visualElement><elementName>Multiplexer</elementName><elementAttributes><entry><string>Bits</string><int>32</int></entry></elementAttributes><pos x="1300" y="1000" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd2</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1280" y="1000" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>imm32</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1280" y="1040" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>ALUSrc</string></entry><entry><string>rotation</string><rotation rotation="1" /></entry></elementAttributes><pos x="1320" y="1080" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>aluB</string></entry></elementAttributes><pos x="1360" y="1020" /></visualElement><visualElement><elementName>alu.dig</elementName><elementAttributes></elementAttributes><pos x="1500" y="1000" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd1</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1480" y="1000" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>aluB</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1480" y="1020" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>ALUOp</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="1480" y="1040" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>result</string></entry></elementAttributes><pos x="1580" y="1000" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd1</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="-80" y="460" /></visualElement><visualElement><elementName>Tunnel</elementName><elementAttributes><entry><string>NetName</string><string>rd2</string></entry><entry><string>rotation</string><rotation rotation="2" /></entry></elementAttributes><pos x="-80" y="520" /></visualElement></visualElements>
   <wires>
     <wire>
       <p1 x="520" y="400" />
@@ -250,6 +340,6 @@
       <p1 x="540" y="120" />
       <p2 x="540" y="180" />
     </wire>
-  </wires>
+  <wire><p1 x="620" y="380" /><p2 x="640" y="380" /></wire><wire><p1 x="740" y="600" /><p2 x="760" y="600" /></wire><wire><p1 x="780" y="600" /><p2 x="800" y="600" /></wire><wire><p1 x="780" y="620" /><p2 x="800" y="620" /></wire><wire><p1 x="780" y="640" /><p2 x="800" y="640" /></wire><wire><p1 x="780" y="660" /><p2 x="800" y="660" /></wire><wire><p1 x="780" y="680" /><p2 x="800" y="680" /></wire><wire><p1 x="780" y="700" /><p2 x="800" y="700" /></wire><wire><p1 x="740" y="760" /><p2 x="760" y="760" /></wire><wire><p1 x="780" y="780" /><p2 x="800" y="780" /></wire><wire><p1 x="880" y="780" /><p2 x="900" y="780" /></wire><wire><p1 x="960" y="780" /><p2 x="980" y="780" /></wire><wire><p1 x="1080" y="600" /><p2 x="1100" y="600" /></wire><wire><p1 x="1080" y="620" /><p2 x="1100" y="620" /></wire><wire><p1 x="1080" y="640" /><p2 x="1100" y="640" /></wire><wire><p1 x="1160" y="600" /><p2 x="1180" y="600" /></wire><wire><p1 x="1160" y="640" /><p2 x="1180" y="640" /></wire><wire><p1 x="1160" y="660" /><p2 x="1180" y="660" /></wire><wire><p1 x="1080" y="800" /><p2 x="1100" y="800" /></wire><wire><p1 x="1080" y="820" /><p2 x="1100" y="820" /></wire><wire><p1 x="1080" y="840" /><p2 x="1100" y="840" /></wire><wire><p1 x="1080" y="860" /><p2 x="1100" y="860" /></wire><wire><p1 x="1080" y="880" /><p2 x="1100" y="880" /></wire><wire><p1 x="1080" y="900" /><p2 x="1100" y="900" /></wire><wire><p1 x="1160" y="800" /><p2 x="1180" y="800" /></wire><wire><p1 x="1160" y="820" /><p2 x="1180" y="820" /></wire><wire><p1 x="1280" y="1000" /><p2 x="1300" y="1000" /></wire><wire><p1 x="1280" y="1040" /><p2 x="1300" y="1040" /></wire><wire><p1 x="1320" y="1040" /><p2 x="1320" y="1080" /></wire><wire><p1 x="1340" y="1020" /><p2 x="1360" y="1020" /></wire><wire><p1 x="1480" y="1000" /><p2 x="1500" y="1000" /></wire><wire><p1 x="1480" y="1020" /><p2 x="1500" y="1020" /></wire><wire><p1 x="1480" y="1040" /><p2 x="1500" y="1040" /></wire><wire><p1 x="1560" y="1000" /><p2 x="1580" y="1000" /></wire><wire><p1 x="-80" y="460" /><p2 x="-60" y="460" /></wire><wire><p1 x="-80" y="520" /><p2 x="-60" y="520" /></wire></wires>
   <measurementOrdering />
 </circuit>
